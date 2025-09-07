@@ -438,25 +438,64 @@ window.addEventListener("scroll", function () {
         $(window).on("scroll", onScroll);
     };
     // for product grid
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     const layoutSwitches = document.querySelectorAll(".tf-view-layout-switch");
+    //     const grid = document.querySelector(".tf-grid-layout");
+
+    //     layoutSwitches.forEach(function (switchEl) {
+    //         switchEl.addEventListener("click", function () {
+    //             // remove "active" from all buttons
+    //             layoutSwitches.forEach(el => el.classList.remove("active"));
+    //             this.classList.add("active");
+
+    //             // remove previous tf-col-X class
+    //             grid.className = grid.className.replace(/\btf-col-\d+\b/g, "");
+
+    //             // add new tf-col-X class from data attribute
+    //             const layout = this.getAttribute("data-value-layout");
+    //             grid.classList.add(layout);
+    //         });
+    //     });
+    // });
+
+    // this for mobile view and desktop view query
     document.addEventListener("DOMContentLoaded", function () {
-        const layoutSwitches = document.querySelectorAll(".tf-view-layout-switch");
-        const grid = document.querySelector(".tf-grid-layout");
+    const layoutSwitches = document.querySelectorAll(".tf-view-layout-switch");
+    const grid = document.querySelector(".tf-grid-layout");
 
-        layoutSwitches.forEach(function (switchEl) {
-            switchEl.addEventListener("click", function () {
-                // remove "active" from all buttons
-                layoutSwitches.forEach(el => el.classList.remove("active"));
-                this.classList.add("active");
+    function applyLayout(layout) {
+        grid.className = grid.className.replace(/\btf-col-\d+\b/g, "");
+        grid.classList.add(layout);
+    }
 
-                // remove previous tf-col-X class
-                grid.className = grid.className.replace(/\btf-col-\d+\b/g, "");
+    function handleResponsiveLayout() {
+        if (window.innerWidth <= 768) {
+            // force 2 columns on mobile
+            applyLayout("tf-col-2");
+            // disable buttons
+            layoutSwitches.forEach(el => el.classList.add("disabled"));
+        } else {
+            // enable buttons again
+            layoutSwitches.forEach(el => el.classList.remove("disabled"));
+        }
+    }
 
-                // add new tf-col-X class from data attribute
-                const layout = this.getAttribute("data-value-layout");
-                grid.classList.add(layout);
-            });
+    // handle layout switching (desktop only)
+    layoutSwitches.forEach(function (switchEl) {
+        switchEl.addEventListener("click", function () {
+            if (window.innerWidth <= 768) return; // block clicks on mobile
+            layoutSwitches.forEach(el => el.classList.remove("active"));
+            this.classList.add("active");
+            const layout = this.getAttribute("data-value-layout");
+            applyLayout(layout);
         });
     });
+
+    // run on load + resize
+    handleResponsiveLayout();
+    window.addEventListener("resize", handleResponsiveLayout);
+});
+
 
     /* Stagger Wrap
   -------------------------------------------------------------------------*/
@@ -506,6 +545,7 @@ window.addEventListener("scroll", function () {
             $(".tf-mini-cart-tool-openable").removeClass("open");
         });
     };
+
 
     /* Header Sticky
   -------------------------------------------------------------------------*/

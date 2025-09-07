@@ -1296,6 +1296,7 @@ a:focus, a:hover {
   display: grid;
   column-gap: 15px;
   row-gap: 30px;
+
 }
 .tf-grid-layout.tf-col-2 {
   grid-template-columns: 1fr 1fr;
@@ -18157,11 +18158,17 @@ ul.list-text.type-number {
     left: 0;
     right: unset;
   }
+   .tf-grid-layout {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
 }
 @media only screen and (max-width: 767px) {
   .rtl .tf-cart-item .img-box {
     left: auto;
     right: 0;
+  }
+    .tf-grid-layout {
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 @keyframes infiniteScrollRv {
@@ -18217,3 +18224,4 @@ ul.list-text.type-number {
   display: flex;
   gap: 20px;
 }
+
